@@ -69,7 +69,8 @@ const Index = () => {
   const { mutate, isLoading } = useMutation(createTransaction, {
     onSuccess: (data) => {
       toast.success("Transaction created");
-      window.open(data.result);
+      //   window.open(data.result);
+      window.location = data.result;
     },
     onError: () => {
       toast.error("An error occured");

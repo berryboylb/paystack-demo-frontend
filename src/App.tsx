@@ -17,7 +17,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<PaymentForm />} />
-            <Route path="/confirm/trxref/:trxref" element={<ConfirmForm />} />
+            <Route path="/confirm/trxref" element={<ConfirmForm />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

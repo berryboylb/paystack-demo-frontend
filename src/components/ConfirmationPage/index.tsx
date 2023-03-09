@@ -1,6 +1,6 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -17,7 +17,14 @@ const verifyTransaction = async (ref: string) => {
   }
 };
 const Index = () => {
-  const { trxref } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  React.useEffect(() => {
+    if (searchParams.has("reference")) {
+      searchParams.delete("reference");
+      setSearchParams(searchParams);
+    }
+  }, []);
+  const trxref = searchParams.get("trxref");
   const { isLoading, isError, data, error } = useQuery(
     "fetch",
     () => verifyTransaction(trxref as string),
