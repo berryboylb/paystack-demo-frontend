@@ -51,7 +51,7 @@ const Index = () => {
     const body = JSON.stringify(data);
     try {
       const res = await axios.post(
-        "http://localhost:7000/api/v1/transaction",
+        "https://make-it.onrender.com/api/v1/transaction",
         body,
         config
       );
@@ -59,6 +59,9 @@ const Index = () => {
     } catch (error: any) {
       const errors = error.response.data.errors;
       if (errors) {
+        errors.forEach((error: any) => {
+          toast.error(error.msg);
+        });
         for (let err in errors) {
           console.log(errors[err][0]);
           toast.error(errors[err][0]);
@@ -70,7 +73,7 @@ const Index = () => {
     onSuccess: (data) => {
       toast.success("Transaction created");
       //   window.open(data.result);
-      window.location = data.result;
+      window.location = data.data;
     },
     onError: () => {
       toast.error("An error occured");

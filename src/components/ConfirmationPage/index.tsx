@@ -9,10 +9,20 @@ const Spinner = React.lazy(() => import("../Spinner"));
 const verifyTransaction = async (ref: string) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:7000/api/v1/transaction?trxref=${ref}`
+      `https://make-it.onrender.com/api/v1/transaction?trxref=${ref}`
     );
     return data;
   } catch (err: any) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error: any) => {
+        toast.error(error.msg);
+      });
+      for (let err in errors) {
+        console.log(errors[err][0]);
+        toast.error(errors[err][0]);
+      }
+    }
     toast.error(err.response.data.message);
   }
 };
@@ -63,7 +73,7 @@ const Index = () => {
               Transaction Id:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result._id}
+              {data?.data._id}
             </h2>
           </div>
 
@@ -72,7 +82,7 @@ const Index = () => {
               Amount:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.amount}
+              {data?.data.amount}
             </h2>
           </div>
 
@@ -81,7 +91,7 @@ const Index = () => {
               reference:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.reference}
+              {data?.data.reference}
             </h2>
           </div>
 
@@ -90,7 +100,7 @@ const Index = () => {
               accessCode:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.accessCode}
+              {data?.data.accessCode}
             </h2>
           </div>
 
@@ -99,7 +109,7 @@ const Index = () => {
               status:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.status ? "Succesful" : "failed"}
+              {data?.data.status ? "Succesful" : "failed"}
             </h2>
           </div>
 
@@ -108,7 +118,7 @@ const Index = () => {
               ip address:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.ip_address}
+              {data?.data.ip_address}
             </h2>
           </div>
 
@@ -117,7 +127,7 @@ const Index = () => {
               gateway response:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.gateway_response}
+              {data?.data.gateway_response}
             </h2>
           </div>
 
@@ -126,7 +136,7 @@ const Index = () => {
               domain:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.domain}
+              {data?.data.domain}
             </h2>
           </div>
 
@@ -135,7 +145,7 @@ const Index = () => {
               verified:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.verified ? "verfied" : "not-verfied"}
+              {data?.data.verified ? "verfied" : "not-verfied"}
             </h2>
           </div>
 
@@ -148,7 +158,7 @@ const Index = () => {
               start_time:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.logs.start_time}
+              {data?.data.logs.start_time}
             </h2>
           </div>
 
@@ -157,7 +167,7 @@ const Index = () => {
               time_spent:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.logs.time_spent}
+              {data?.data.logs.time_spent}
             </h2>
           </div>
 
@@ -166,7 +176,7 @@ const Index = () => {
               attempts:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.logs.attempts}
+              {data?.data.logs.attempts}
             </h2>
           </div>
 
@@ -175,7 +185,7 @@ const Index = () => {
               errors:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.logs.errors}
+              {data?.data.logs.errors}
             </h2>
           </div>
 
@@ -184,7 +194,7 @@ const Index = () => {
               success:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.logs.success ? "Yes" : "No"}
+              {data?.data.logs.success ? "Yes" : "No"}
             </h2>
           </div>
 
@@ -193,7 +203,7 @@ const Index = () => {
               Mobile:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.logs.mobile ? "Yes" : "No"}
+              {data?.data.logs.mobile ? "Yes" : "No"}
             </h2>
           </div>
 
@@ -202,7 +212,7 @@ const Index = () => {
               history:
             </h4>
             <>
-              {data?.result.logs.history.map((item: any, i: number) => (
+              {data?.data.logs.history.map((item: any, i: number) => (
                 <h2
                   key={i}
                   className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans"
@@ -222,7 +232,7 @@ const Index = () => {
               authorization code:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.authorization_code}
+              {data?.data.transaction_authorization.authorization_code}
             </h2>
           </div>
 
@@ -231,7 +241,7 @@ const Index = () => {
               bin:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.bin}
+              {data?.data.transaction_authorization.bin}
             </h2>
           </div>
 
@@ -240,7 +250,7 @@ const Index = () => {
               last four digits:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.last4}
+              {data?.data.transaction_authorization.last4}
             </h2>
           </div>
 
@@ -249,7 +259,7 @@ const Index = () => {
               expiry month:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.exp_month}
+              {data?.data.transaction_authorization.exp_month}
             </h2>
           </div>
 
@@ -258,7 +268,7 @@ const Index = () => {
               expiry year:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.exp_year}
+              {data?.data.transaction_authorization.exp_year}
             </h2>
           </div>
 
@@ -267,7 +277,7 @@ const Index = () => {
               channel:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.channel}
+              {data?.data.transaction_authorization.channel}
             </h2>
           </div>
 
@@ -276,7 +286,7 @@ const Index = () => {
               Card type:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.card_type}
+              {data?.data.transaction_authorization.card_type}
             </h2>
           </div>
 
@@ -285,7 +295,7 @@ const Index = () => {
               bank:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.bank}
+              {data?.data.transaction_authorization.bank}
             </h2>
           </div>
 
@@ -294,7 +304,7 @@ const Index = () => {
               country code:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.country_code}
+              {data?.data.transaction_authorization.country_code}
             </h2>
           </div>
 
@@ -303,7 +313,7 @@ const Index = () => {
               brand:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.brand}
+              {data?.data.transaction_authorization.brand}
             </h2>
           </div>
 
@@ -312,7 +322,7 @@ const Index = () => {
               reusable:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.reusable}
+              {data?.data.transaction_authorization.reusable}
             </h2>
           </div>
 
@@ -321,7 +331,7 @@ const Index = () => {
               signature:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.signature}
+              {data?.data.transaction_authorization.signature}
             </h2>
           </div>
 
@@ -330,8 +340,8 @@ const Index = () => {
               account_name:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.account_name
-                ? data?.result.transaction_authorization.account_name
+              {data?.data.transaction_authorization.account_name
+                ? data?.data.transaction_authorization.account_name
                 : "N/A"}
             </h2>
           </div>
@@ -341,9 +351,9 @@ const Index = () => {
               receiver bank account number:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization
+              {data?.data.transaction_authorization
                 .receiver_bank_account_number
-                ? data?.result.transaction_authorization
+                ? data?.data.transaction_authorization
                     .receiver_bank_account_number
                 : "N/A"}
             </h2>
@@ -354,8 +364,8 @@ const Index = () => {
               receiver bank:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization.receiver_bank
-                ? data?.result.transaction_authorization.receiver_bank
+              {data?.data.transaction_authorization.receiver_bank
+                ? data?.data.transaction_authorization.receiver_bank
                 : "N/A"}
             </h2>
           </div>
@@ -365,7 +375,7 @@ const Index = () => {
               id:
             </h4>
             <h2 className=" ml-5 text-[#545F7D] text-base lg:text-lg font-semibold capitalize font-workSans">
-              {data?.result.transaction_authorization._id}
+              {data?.data.transaction_authorization._id}
             </h2>
           </div>
         </div>
